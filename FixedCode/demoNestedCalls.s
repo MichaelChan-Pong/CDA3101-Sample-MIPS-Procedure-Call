@@ -122,11 +122,13 @@ sum:
   sw $s2, 0($sp)          # store $s2 (c) at bottom of stack
 
   ##### BODY #####
-  addi $sp, $sp, -4       # allocate 1 word on the stack
-  sw $a0, 0($sp)          # store $a0 in the stack
+  addi $sp, $sp, -8       # allocate 1 word on the stack
+  sw $a0, 4($sp)          # store $a0 in the stack
+  sw $a1, 0($sp)          # store $a0 in the stack
   jal printMessage        # call printMessage procedure
-  lw $a0, 0($sp)          # load $a0 from the stack
-  addi $sp, $sp, 4        # pop the stack
+  lw $a1, 0($sp)          # store $a0 in the stack
+  lw $a0, 4($sp)          # load $a0 from the stack
+  addi $sp, $sp, 8        # pop the stack
 
   add $s0, $zero, $a0     # load x into $s0
   add $s1, $zero, $a1     # load y into $s1
