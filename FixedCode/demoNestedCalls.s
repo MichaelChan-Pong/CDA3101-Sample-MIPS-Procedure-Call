@@ -115,6 +115,12 @@ main:
 
 sum:
   ##### PROLOGUE #####
+
+  # Because we're calling another function within this procedure,
+  # $ra is going to be overridden with the address for an instruction
+  # inside this procedure. Therefore, we should preserve it so that
+  # we can go back to where this procedure was originally called.
+
   addi $sp, $sp, -16      # allocate 4 words on the stack
   sw $ra, 12($sp)         # store $ra at top of stack
   sw $s0, 8($sp)          # store $s0 (a) next
@@ -122,6 +128,11 @@ sum:
   sw $s2, 0($sp)          # store $s2 (c) at bottom of stack
 
   ##### BODY #####
+
+  # Because we're about to call another function that may override
+  # $a0 and $a1, and because we use these values later, we should
+  # preserve these on the stack. These are caller-saved registers.
+
   addi $sp, $sp, -8       # allocate 1 word on the stack
   sw $a0, 4($sp)          # store $a0 in the stack
   sw $a1, 0($sp)          # store $a0 in the stack

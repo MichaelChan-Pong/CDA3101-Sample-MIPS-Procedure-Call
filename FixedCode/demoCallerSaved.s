@@ -60,7 +60,8 @@ main:
   la $a0, newline         # load string address of "\n"
   syscall                 # print string
 
-  ##### Because we know we'll need $t0-$t2 later, we need to push it to the stack #####
+  # Because we know that we still need $t0-$t2, and because these
+  # are caller-saved registers, we need to preserve these on the stack
   
   addi $sp, $sp, -12      # allocate 3 words of space on the stack
   sw $t0, 8($sp)          # store a at the top of the stack
@@ -68,6 +69,8 @@ main:
   sw $t2, 0($sp)          # store c at the bottom of the stack next
 
   jal sum                 # call procedure sum
+
+  # Here we reload the values from the stack
 
   lw $t2, 0($sp)          # restore c from the stack
   lw $t1, 4($sp)          # restore b from the stack

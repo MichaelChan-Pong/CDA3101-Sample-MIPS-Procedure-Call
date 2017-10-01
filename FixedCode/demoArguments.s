@@ -61,9 +61,16 @@ main:
   la $a0, newline         # load string address of "\n"
   syscall                 # print string
 
+  # Because the procedure takes two arguments, we load these in $a0 and $a1
+  # before jump-and-linking to sum
+
   add $a0, $s0, $zero     # store a in first argument register
   add $a1, $s1, $zero     # store b in second argument register
+
   jal sum                 # call sum procedure
+
+  # We take the return value from $v0 and store it in $s2 (c)
+
   add $s2, $v0, $zero     # store returned value in c
 
   addi $v0, $zero, 4      # print string on syscall
@@ -119,6 +126,9 @@ sum:
   sw $s2, 0($sp)          # store $s2 (c) at bottom of stack
 
   ##### BODY #####
+
+  # We pull the arguments from $a0 and $a1
+
   add $s0, $zero, $a0     # load x into $s0
   add $s1, $zero, $a1     # load y into $s1
   add $s2, $s0, $s1       # store the sum of x and y into $s2
@@ -150,6 +160,8 @@ sum:
   addi $v0, $zero, 4      # print string on syscall
   la $a0, newline         # load string address of "\n"
   syscall                 # print string
+
+  # We store the return value in $v0 before returning to the caller
 
   add $v0, $s2, $zero     # place return value in $v0
 

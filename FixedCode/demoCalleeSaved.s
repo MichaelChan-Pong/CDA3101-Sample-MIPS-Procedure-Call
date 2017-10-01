@@ -111,6 +111,11 @@ main:
 
 sum:
   ##### PROLOGUE #####
+
+  # Because we know this procedure is going to use registers
+  # $s0-$s2, and because these are callee-saved registers,
+  # we should preserve these on the stack
+
   addi $sp, $sp, -12      # allocate 3 words on the stack
   sw $s0, 8($sp)          # store $s0 (a) at top of stack
   sw $s1, 4($sp)          # store $s1 (b) next
@@ -150,6 +155,10 @@ sum:
   syscall                 # print string
 
   ##### EPILOGUE #####
+
+  # Here we reload the values from the stack and deallocate
+  # the stack
+
   lw $s2, 0($sp)          # load $s2 (c) from bottom of stack
   lw $s1, 4($sp)          # load $s1 (b) from stack
   lw $s0, 8($sp)          # load $s0 (a) from top of stack
