@@ -121,7 +121,7 @@ sum:
   # inside this procedure. Therefore, we should preserve it so that
   # we can go back to where this procedure was originally called.
 
-  addi $sp, $sp, -16      # allocate 4 words on the stack
+  addi $sp, $sp, -24      # allocate 6 words on the stack (4 for callee-saved registers, 2 for caller-saved)
   sw $ra, 12($sp)         # store $ra at top of stack
   sw $s0, 8($sp)          # store $s0 (a) next
   sw $s1, 4($sp)          # store $s1 (b) next
@@ -133,13 +133,11 @@ sum:
   # $a0 and $a1, and because we use these values later, we should
   # preserve these on the stack. These are caller-saved registers.
 
-  addi $sp, $sp, -8       # allocate 1 word on the stack
   sw $a0, 4($sp)          # store $a0 in the stack
   sw $a1, 0($sp)          # store $a0 in the stack
   jal printMessage        # call printMessage procedure
   lw $a1, 0($sp)          # store $a0 in the stack
   lw $a0, 4($sp)          # load $a0 from the stack
-  addi $sp, $sp, 8        # pop the stack
 
   add $s0, $zero, $a0     # load x into $s0
   add $s1, $zero, $a1     # load y into $s1
@@ -180,7 +178,7 @@ sum:
   lw $s1, 4($sp)          # load $s1 (b) from stack
   lw $s0, 8($sp)          # load $s0 (a) from stack
   lw $ra, 12($sp)         # load $ra from top of stack
-  addi $sp, $sp, 16       # deallocate stack
+  addi $sp, $sp, 24       # deallocate stack
 
   jr $ra                  # return back to where procedure was called
 
